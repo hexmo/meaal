@@ -3,6 +3,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import SecondScreen from "../screens/SecondScreen";
 import MainTabs from "./MainTabs";
+import BiodataForm from "../screens/onboarding/BiodataForm";
 
 const MainStack = createNativeStackNavigator();
 const Main = () => {
@@ -12,6 +13,7 @@ const Main = () => {
         headerShown: false,
       }}
     >
+      <MainStack.Screen name="BiodataForm" component={BiodataForm} />
       <MainStack.Screen name="MainTabs" component={MainTabs} />
       <MainStack.Screen name="SecondScreen" component={SecondScreen} />
     </MainStack.Navigator>
