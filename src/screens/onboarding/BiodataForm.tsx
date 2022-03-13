@@ -11,6 +11,7 @@ import Height from "../../components/biodata/Height";
 import Name from "../../components/biodata/Name";
 import SubscriptionPlans from "../../components/biodata/SubscriptionPlans";
 import Weight from "../../components/biodata/Weight";
+import Age from "../../components/biodata/Age";
 
 const BiodataStack = createNativeStackNavigator();
 
@@ -42,6 +43,7 @@ export default function BiodataForm() {
             <BiodataStack.Screen name="Gender" component={Gender} />
             <BiodataStack.Screen name="Height" component={Height} />
             <BiodataStack.Screen name="Weight" component={Weight} />
+            <BiodataStack.Screen name="Age" component={Age} />
             <BiodataStack.Screen name="Goal" component={Goal} />
             <BiodataStack.Screen
               name="FoodPreferances"

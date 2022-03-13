@@ -3,13 +3,13 @@ import React, { useState } from "react";
 import { Text, TextInput } from "react-native-rapi-ui";
 import NextButton from "../NextButton";
 
-const Weight = ({ navigation }) => {
-  const [weight, setWeight] = useState<string>("");
+const Age = ({ navigation }) => {
+  const [age, setAge] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
 
   const handleNext = () => {
     setLoading(true);
-    setTimeout(() => navigation.navigate("Age"), 1000);
+    setTimeout(() => navigation.navigate("FoodPreferances"), 1000);
   };
 
   return (
@@ -21,7 +21,7 @@ const Weight = ({ navigation }) => {
           alignSelf: "center",
         }}
       >
-        Weight
+        Age
       </Text>
       <View
         style={{
@@ -33,16 +33,16 @@ const Weight = ({ navigation }) => {
         <TextInput
           containerStyle={{ marginVertical: 20 }}
           placeholder="00"
-          value={weight}
+          value={age}
           autoCapitalize="none"
           autoCompleteType="off"
           autoCorrect={false}
           keyboardType="number-pad"
-          onChangeText={(text: string) => setWeight(text)}
+          onChangeText={(text: string) => setAge(text)}
           style={{ flex: 1 }}
         />
         <Text fontWeight="bold" size="lg" style={{ marginLeft: 10 }}>
-          KG
+          Years
         </Text>
       </View>
       <NextButton loading={loading} onPress={handleNext} />
@@ -50,4 +50,4 @@ const Weight = ({ navigation }) => {
   );
 };
 
-export default Weight;
+export default Age;
