@@ -3,13 +3,25 @@ import React, { useState } from "react";
 import { Text, themeColor } from "react-native-rapi-ui";
 import NextButton from "../NextButton";
 
+import { getUserDetails, updateUserDetails } from "../../storage/LocalStore";
+const userDetails = getUserDetails();
+
 const Goal = ({ navigation }) => {
   const [goal, setGoal] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
 
   const handleNext = () => {
     setLoading(true);
-    setTimeout(() => navigation.navigate("SubscriptionPlans"), 1000);
+
+    if (goal == "") {
+      alert("Please select a goal to continue.");
+      setLoading(false);
+      return;
+    }
+
+    updateUserDetails({ goal, ...userDetails });
+
+    navigation.navigate("SubscriptionPlans");
   };
 
   return (

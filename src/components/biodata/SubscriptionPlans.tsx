@@ -1,6 +1,11 @@
-import { View, StyleSheet, Pressable, Alert } from "react-native";
+import { View, StyleSheet, Pressable } from "react-native";
 import React from "react";
 import { themeColor, Text } from "react-native-rapi-ui";
+
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+import { getUserDetails, updateUserDetails } from "../../storage/LocalStore";
+const  userDetails = getUserDetails();
 
 const SubscriptionPlans = () => {
   return (
@@ -33,7 +38,8 @@ const SubscriptionPlans = () => {
 
 const GoalItem = ({ name, price, disabled }) => {
   const handlePlanSelect = () => {
-    Alert.alert("We are processing you request.");
+    alert(userDetails);
+    console.log(userDetails);
   };
 
   return (

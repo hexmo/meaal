@@ -1,7 +1,10 @@
 import { View, Image } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { themeColor, Text, TextInput } from "react-native-rapi-ui";
 import NextButton from "../NextButton";
+
+import { getUserDetails, updateUserDetails } from "../../storage/LocalStore";
+const userDetails = getUserDetails();
 
 const Name = ({ navigation }) => {
   const [fullName, setFullName] = useState<string>("");
@@ -9,7 +12,15 @@ const Name = ({ navigation }) => {
 
   const handleNext = () => {
     setLoading(true);
-    setTimeout(() => navigation.navigate("Gender"), 1000);
+
+    if (fullName == "") {
+      alert("Invalid Name");
+      setLoading(false);
+      return;
+    }
+
+    updateUserDetails({ fullName, ...userDetails });
+    navigation.navigate("Gender");
   };
 
   return (

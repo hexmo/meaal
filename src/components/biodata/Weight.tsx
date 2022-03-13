@@ -3,13 +3,23 @@ import React, { useState } from "react";
 import { Text, TextInput } from "react-native-rapi-ui";
 import NextButton from "../NextButton";
 
+import { getUserDetails, updateUserDetails } from "../../storage/LocalStore";
+const userDetails = getUserDetails();
+
 const Weight = ({ navigation }) => {
   const [weight, setWeight] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
 
   const handleNext = () => {
     setLoading(true);
-    setTimeout(() => navigation.navigate("Age"), 1000);
+    if (weight == "") {
+      alert("Please enter proper wight measurement to continue.");
+      setLoading(false);
+      return;
+    }
+
+    updateUserDetails({ weight, ...userDetails });
+    navigation.navigate("Age");
   };
 
   return (
