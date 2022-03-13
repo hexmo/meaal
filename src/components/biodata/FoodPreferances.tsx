@@ -27,6 +27,7 @@ const FoodPreferances = ({ navigation }) => {
         {foodPreferanceOptions.map((option) => (
           <FoodPreferanceItem
             id={option.id}
+            key={option.id}
             name={option.name}
             description={option.description}
             foodPreferance={foodPreferance}

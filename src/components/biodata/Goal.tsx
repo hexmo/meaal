@@ -9,7 +9,7 @@ const Goal = ({ navigation }) => {
 
   const handleNext = () => {
     setLoading(true);
-    setTimeout(() => navigation.navigate("Gender"), 1000);
+    setTimeout(() => navigation.navigate("SubscriptionPlans"), 1000);
   };
 
   return (
@@ -30,6 +30,7 @@ const Goal = ({ navigation }) => {
         {goalOptions.map((option) => (
           <GoalItem
             id={option.id}
+            key={option.id}
             name={option.name}
             goal={goal}
             setGoal={setGoal}
