@@ -3,13 +3,24 @@ import React, { useState } from "react";
 import { Text, TextInput } from "react-native-rapi-ui";
 import NextButton from "../NextButton";
 
+import { getUserDetails, updateUserDetails } from "../../storage/LocalStore";
+const userDetails = getUserDetails();
+
 const Age = ({ navigation }) => {
   const [age, setAge] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
 
   const handleNext = () => {
     setLoading(true);
-    setTimeout(() => navigation.navigate("FoodPreferances"), 1000);
+
+    if (age == "") {
+      alert("Please input proper age to continue.");
+      setLoading(false);
+      return;
+    }
+
+    updateUserDetails({ age, ...userDetails });
+    navigation.navigate("FoodPreferances");
   };
 
   return (

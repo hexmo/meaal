@@ -4,6 +4,9 @@ import { themeColor, Text } from "react-native-rapi-ui";
 import NextButton from "../NextButton";
 import { Foundation } from "@expo/vector-icons";
 
+import { getUserDetails, updateUserDetails } from "../../storage/LocalStore";
+const userDetails = getUserDetails();
+
 const Gender = ({ navigation }) => {
   const [gender, setGender] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
@@ -14,7 +17,15 @@ const Gender = ({ navigation }) => {
 
   const handleNext = () => {
     setLoading(true);
-    setTimeout(() => navigation.navigate("Height"), 1000);
+
+    if (gender == "") {
+      alert("Please select a gender to continue.");
+      setLoading(false);
+      return;
+    }
+
+    updateUserDetails({ gender, ...userDetails });
+    navigation.navigate("Height");
   };
 
   return (

@@ -3,13 +3,24 @@ import React, { useState } from "react";
 import { Text, themeColor } from "react-native-rapi-ui";
 import NextButton from "../NextButton";
 
+import { getUserDetails, updateUserDetails } from "../../storage/LocalStore";
+const userDetails = getUserDetails();
+
 const FoodPreferances = ({ navigation }) => {
   const [foodPreferance, setFoodPreferance] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
 
   const handleNext = () => {
     setLoading(true);
-    setTimeout(() => navigation.navigate("Goal"), 1000);
+
+    if (foodPreferance == "") {
+      alert("Please select a food option to continue.");
+      setLoading(false);
+      return;
+    }
+
+    updateUserDetails({ foodPreferance, ...userDetails });
+    navigation.navigate("Goal");
   };
 
   return (
