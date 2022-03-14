@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { AuthContext } from '../provider/AuthProvider';
 
 import { NavigationContainer } from '@react-navigation/native';
+import "react-native-url-polyfill/auto";
 
 import Main from './MainStack';
 import Auth from './AuthStack';
