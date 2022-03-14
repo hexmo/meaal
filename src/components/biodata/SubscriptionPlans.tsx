@@ -1,13 +1,15 @@
 import { View, StyleSheet, Pressable } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { themeColor, Text } from "react-native-rapi-ui";
-
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import { getUserDetails, updateUserDetails } from "../../storage/LocalStore";
-const  userDetails = getUserDetails();
-
 const SubscriptionPlans = () => {
+  let userDetails = {};
+
+  useEffect(() => {
+    getUserDetails().then((v) => (userDetails = v));
+  }, []);
+
   return (
     <View style={{ flex: 1, justifyContent: "center" }}>
       <Text
@@ -37,8 +39,15 @@ const SubscriptionPlans = () => {
 };
 
 const GoalItem = ({ name, price, disabled }) => {
+  const [userDetails, setDetails] = useState({});
+
+  useEffect(() => {
+    getUserDetails().then((v) => setDetails(v));
+  }, []);
+
   const handlePlanSelect = () => {
-    alert(userDetails);
+    // alert(userDetails);
+    console.log({ ...userDetails, random: "haha" });
     console.log(userDetails);
   };
 
@@ -121,3 +130,22 @@ const subscriptionPlanOptions = [
     disable: false,
   },
 ];
+
+const getUserDetails = async () => {
+  try {
+    const jsonValue = await AsyncStorage.getItem("@userDetail");
+    console.log(JSON.parse(jsonValue));
+    return jsonValue != null ? JSON.parse(jsonValue) : null;
+  } catch (e) {
+    alert("Something went wrong. Try again later.");
+  }
+};
+
+const updateUserDetails = async (value) => {
+  try {
+    const jsonValue = JSON.stringify(value);
+    await AsyncStorage.setItem("@userDetail", jsonValue);
+  } catch (e) {
+    alert("Something went wrong. Try again later.");
+  }
+};

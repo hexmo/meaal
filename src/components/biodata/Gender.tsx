@@ -1,13 +1,16 @@
 import { View, Pressable, StyleSheet } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { themeColor, Text } from "react-native-rapi-ui";
 import NextButton from "../NextButton";
 import { Foundation } from "@expo/vector-icons";
 
-import { getUserDetails, updateUserDetails } from "../../storage/LocalStore";
-const userDetails = getUserDetails();
-
 const Gender = ({ navigation }) => {
+  const [userDetails, setDetails] = useState({});
+
+  useEffect(() => {
+    getUserDetails().then((v) => setDetails(v));
+  }, []);
+
   const [gender, setGender] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -24,8 +27,9 @@ const Gender = ({ navigation }) => {
       return;
     }
 
-    updateUserDetails({ gender, ...userDetails });
-    navigation.navigate("Height");
+    updateUserDetails({ ...userDetails, gender }).then(() =>
+      navigation.navigate("Height")
+    );
   };
 
   return (
@@ -82,3 +86,24 @@ const styles = StyleSheet.create({
     elevation: 16,
   },
 });
+
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+const getUserDetails = async () => {
+  try {
+    const jsonValue = await AsyncStorage.getItem("@userDetail");
+    console.log(JSON.parse(jsonValue));
+    return jsonValue != null ? JSON.parse(jsonValue) : null;
+  } catch (e) {
+    alert("Something went wrong. Try again later.");
+  }
+};
+
+const updateUserDetails = async (value) => {
+  try {
+    const jsonValue = JSON.stringify(value);
+    await AsyncStorage.setItem("@userDetail", jsonValue);
+  } catch (e) {
+    alert("Something went wrong. Try again later.");
+  }
+};
