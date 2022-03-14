@@ -11,7 +11,7 @@ const Name = ({ navigation }) => {
   }, []);
 
   useEffect(() => {
-    if (userDetails.onboardingCompleted) {
+    if (userDetails && userDetails.onboardingCompleted) {
       navigation.replace("MainHome");
     }
   });

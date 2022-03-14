@@ -13,6 +13,7 @@ import {
 } from "react-native-rapi-ui";
 import { Ionicons } from "@expo/vector-icons";
 import Meal from "./Meal";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function ({ navigation }) {
   const [mealPlan, setActivePlan] = useState(mealPlans);
@@ -37,7 +38,7 @@ export default function ({ navigation }) {
         onPress: async () => {
           const { error } = await supabase.auth.signOut();
           if (!error) {
-            alert("Signed out!");
+            AsyncStorage.clear().then(() => alert("Signed out!"));
           }
           if (error) {
             alert(error.message);
