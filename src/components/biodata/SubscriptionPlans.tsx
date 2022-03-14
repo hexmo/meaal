@@ -47,12 +47,15 @@ const GoalItem = ({ name, price, disabled }) => {
       console.log("User details update started.");
       const user = supabase.auth.user();
 
-      const { data, error } = await supabase.from("profiles").insert([
+      const { error } = await supabase.from("profiles").upsert(
         {
           id: user.id,
-          data: { ...userDetails },
+          data: { ...userDetails, onboardingCompleted: true },
         },
-      ]);
+        {
+          returning: "minimal", // Don't return the value after inserting
+        }
+      );
 
       if (error) {
         console.log(error.message);
@@ -61,10 +64,10 @@ const GoalItem = ({ name, price, disabled }) => {
       } else {
         completeOnboarding();
       }
-
-      console.log("User details update end.");
     } catch (error) {
       alert(error.message);
+    } finally {
+      console.log("User details update end.");
     }
   }
 
