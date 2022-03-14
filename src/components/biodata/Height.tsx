@@ -1,12 +1,15 @@
 import { View } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Text, TextInput } from "react-native-rapi-ui";
 import NextButton from "../NextButton";
 
-import { getUserDetails, updateUserDetails } from "../../storage/LocalStore";
-const userDetails = getUserDetails();
-
 const Height = ({ navigation }) => {
+  const [userDetails, setDetails] = useState({});
+
+  useEffect(() => {
+    getUserDetails().then((v) => setDetails(v));
+  }, []);
+
   const [height, setHeight] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -19,9 +22,9 @@ const Height = ({ navigation }) => {
       return;
     }
 
-    updateUserDetails({ height, ...userDetails });
-
-    navigation.navigate("Weight");
+    updateUserDetails({ ...userDetails, height }).then(() =>
+      navigation.navigate("Weight")
+    );
   };
 
   return (
@@ -63,3 +66,24 @@ const Height = ({ navigation }) => {
 };
 
 export default Height;
+
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+const getUserDetails = async () => {
+  try {
+    const jsonValue = await AsyncStorage.getItem("@userDetail");
+    console.log(JSON.parse(jsonValue));
+    return jsonValue != null ? JSON.parse(jsonValue) : null;
+  } catch (e) {
+    alert("Something went wrong. Try again later.");
+  }
+};
+
+const updateUserDetails = async (value) => {
+  try {
+    const jsonValue = JSON.stringify(value);
+    await AsyncStorage.setItem("@userDetail", jsonValue);
+  } catch (e) {
+    alert("Something went wrong. Try again later.");
+  }
+};
