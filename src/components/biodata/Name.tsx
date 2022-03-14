@@ -2,19 +2,20 @@ import { View, Image } from "react-native";
 import React, { useState, useEffect } from "react";
 import { themeColor, Text, TextInput } from "react-native-rapi-ui";
 import NextButton from "../NextButton";
+import { supabase } from "../../initSupabase";
 
 const Name = ({ navigation }) => {
   const [userDetails, setDetails] = useState({});
 
   useEffect(() => {
-    getUserDetails().then((v) => setDetails(v));
+    getProfile();
   }, []);
 
   useEffect(() => {
     if (userDetails && userDetails.onboardingCompleted) {
       navigation.replace("MainHome");
     }
-  });
+  }, [userDetails]);
 
   const [fullName, setFullName] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
@@ -32,6 +33,31 @@ const Name = ({ navigation }) => {
       navigation.navigate("Gender")
     );
   };
+
+  async function getProfile() {
+    try {
+      setLoading(true);
+      const user = supabase.auth.user();
+
+      let { data, error, status } = await supabase
+        .from("profiles")
+        .select(`data`)
+        .eq("id", user.id)
+        .single();
+
+      if (error && status !== 406) {
+        throw error;
+      }
+
+      if (data) {
+        setDetails(data.data);
+      }
+    } catch (error) {
+      alert(error.message);
+    } finally {
+      setLoading(false);
+    }
+  }
 
   return (
     <View style={{ flex: 1, justifyContent: "center", paddingHorizontal: 20 }}>
