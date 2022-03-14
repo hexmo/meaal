@@ -28,6 +28,12 @@ export default function ({
   async function register() {
     setLoading(true);
 
+    if (email == "" || password == "") {
+      alert("Email and Password field can't be empty.");
+      setLoading(false);
+      return;
+    }
+
     const { user, error } = await supabase.auth.signUp({
       email: email,
       password: password,
