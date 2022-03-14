@@ -12,20 +12,11 @@ import Name from "../../components/biodata/Name";
 import SubscriptionPlans from "../../components/biodata/SubscriptionPlans";
 import Weight from "../../components/biodata/Weight";
 import Age from "../../components/biodata/Age";
+import Home from "../Home";
 
 const BiodataStack = createNativeStackNavigator();
 
 export default function BiodataForm() {
-  const [bioData, setBiodata] = useState({
-    fullName: "",
-    gender: "",
-    weight: "",
-    height: "",
-    goal: "", // Gain Weight, Lose Weight, Build Muscle
-    foodPreferances: "", // Veg, vegan, non-veg
-    subscribedDays: "", // 7 days plan, 15 days plan
-  });
-
   return (
     <KeyboardAvoidingView behavior="height" enabled style={{ flex: 1 }}>
       <Layout>
@@ -53,9 +44,20 @@ export default function BiodataForm() {
               name="SubscriptionPlans"
               component={SubscriptionPlans}
             />
+            <BiodataStack.Screen name="MainHome" component={Home} />
           </BiodataStack.Navigator>
         </ScrollView>
       </Layout>
     </KeyboardAvoidingView>
   );
 }
+
+const bioData = {
+  fullName: "",
+  gender: "",
+  weight: "",
+  height: "",
+  goal: "", // Gain Weight, Lose Weight, Build Muscle
+  foodPreferances: "", // Veg, vegan, non-veg
+  subscribedDays: "", // 7 days plan, 15 days plan
+};

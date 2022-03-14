@@ -10,6 +10,12 @@ const Name = ({ navigation }) => {
     getUserDetails().then((v) => setDetails(v));
   }, []);
 
+  useEffect(() => {
+    if (userDetails.onboardingCompleted) {
+      navigation.replace("MainHome");
+    }
+  });
+
   const [fullName, setFullName] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
 

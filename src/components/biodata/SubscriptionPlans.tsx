@@ -2,14 +2,10 @@ import { View, StyleSheet, Pressable } from "react-native";
 import React, { useEffect, useState } from "react";
 import { themeColor, Text } from "react-native-rapi-ui";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { supabase } from "../../initSupabase";
+import { useNavigation } from "@react-navigation/native";
 
 const SubscriptionPlans = () => {
-  let userDetails = {};
-
-  useEffect(() => {
-    getUserDetails().then((v) => (userDetails = v));
-  }, []);
-
   return (
     <View style={{ flex: 1, justifyContent: "center" }}>
       <Text
@@ -39,22 +35,53 @@ const SubscriptionPlans = () => {
 };
 
 const GoalItem = ({ name, price, disabled }) => {
+  const navigation = useNavigation();
   const [userDetails, setDetails] = useState({});
 
   useEffect(() => {
     getUserDetails().then((v) => setDetails(v));
   }, []);
 
-  const handlePlanSelect = () => {
-    // alert(userDetails);
-    console.log({ ...userDetails, random: "haha" });
-    console.log(userDetails);
+  async function updateProfile() {
+    try {
+      console.log("User details update started.");
+      const user = supabase.auth.user();
+
+      const { data, error } = await supabase.from("profiles").insert([
+        {
+          id: user.id,
+          data: { ...userDetails },
+        },
+      ]);
+
+      if (error) {
+        console.log(error.message);
+        alert(error.message);
+        throw error;
+      } else {
+        alert(data);
+      }
+
+      console.log("User details update end.");
+    } catch (error) {
+      // alert(error.message);
+    } finally {
+      updateUserDetails({ ...userDetails, onboardingCompleted: true }).then(
+        () => navigation.navigate("BiodataForm")
+      );
+    }
+  }
+
+  const completeOnboarding = () => {
+    updateUserDetails({ ...userDetails, onboardingCompleted: true }).then(() =>
+      navigation.replace("MainHome")
+    );
   };
 
   return (
     <Pressable
       style={[styles.card, disabled ? styles.disabledCard : styles.null]}
-      onPress={handlePlanSelect}
+      onPress={completeOnboarding}
       disabled={disabled}
     >
       <Text fontWeight="bold" size="lg">
