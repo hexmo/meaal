@@ -59,16 +59,12 @@ const GoalItem = ({ name, price, disabled }) => {
         alert(error.message);
         throw error;
       } else {
-        alert(data);
+        completeOnboarding();
       }
 
       console.log("User details update end.");
     } catch (error) {
-      // alert(error.message);
-    } finally {
-      updateUserDetails({ ...userDetails, onboardingCompleted: true }).then(
-        () => navigation.navigate("BiodataForm")
-      );
+      alert(error.message);
     }
   }
 
@@ -81,7 +77,9 @@ const GoalItem = ({ name, price, disabled }) => {
   return (
     <Pressable
       style={[styles.card, disabled ? styles.disabledCard : styles.null]}
-      onPress={completeOnboarding}
+      onPress={() => {
+        updateProfile();
+      }}
       disabled={disabled}
     >
       <Text fontWeight="bold" size="lg">
