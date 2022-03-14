@@ -28,6 +28,13 @@ export default function ({
 
   async function login() {
     setLoading(true);
+
+    if (email == "" || password == "") {
+      alert("Email and Password field can't be empty.");
+      setLoading(false);
+      return;
+    }
+
     const { user, error } = await supabase.auth.signIn({
       email: email,
       password: password,
@@ -152,17 +159,7 @@ export default function ({
                 marginTop: 10,
                 justifyContent: "center",
               }}
-            >
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate("ForgetPassword");
-                }}
-              >
-                <Text size="md" fontWeight="bold">
-                  Forget password
-                </Text>
-              </TouchableOpacity>
-            </View>
+            ></View>
           </View>
         </ScrollView>
       </Layout>
